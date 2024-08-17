@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ChakraProvider } from '@chakra-ui/react';
+import { AuthProvider } from './contexts/AuthContext';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import EmployerDashboard from './Components/Dashboard/EmployerDashboard';
+import JobSeekerDashboard from './Components/Dashboard/JobSeekerDashboard';
+import PrivateRoutes from './Components/Common/PrivateRoutes';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <ChakraProvider>
+            <AuthProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route 
+                            path="/employer-dashboard" 
+                            element={
+                                <PrivateRoutes component={EmployerDashboard} />
+                            }
+                        />
+                        <Route 
+                            path="/jobseeker-dashboard" 
+                            element={
+                                <PrivateRoutes component={JobSeekerDashboard} />
+                            }
+                        />
+                        <Route path="*" element={<div>404 Not Found</div>} />
+                    </Routes>
+                </Router>
+            </AuthProvider>
+        </ChakraProvider>
+    );
+};
 
 export default App;
